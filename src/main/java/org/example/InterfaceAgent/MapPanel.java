@@ -1,15 +1,13 @@
 package org.example.InterfaceAgent;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
 import org.example.problematic.Ville;
 
 import javax.swing.ImageIcon;
@@ -50,7 +48,7 @@ public class MapPanel extends JPanel {
 				int y = e.getY();
 
 				try {
-					imageVille = new ImageIcon(MapPanel.class.getResource("/images/city5.png")).getImage();
+					imageVille = new ImageIcon(MapPanel.class.getResource("/images/loc5.png")).getImage();
 				} catch (final Exception ex) {
 					imageVille = null;
 				}
@@ -115,7 +113,7 @@ public class MapPanel extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 		super.paintComponent(g2d);
 
-		this.imageBackground = new ImageIcon(MapPanel.class.getResource("/images/maroc5.jpg")).getImage();
+		this.imageBackground = new ImageIcon(MapPanel.class.getResource("/images/map.png")).getImage();
 
 		if (imageBackground != null) {
 			g.drawImage(imageBackground, 0, 0, this);
@@ -136,17 +134,30 @@ public class MapPanel extends JPanel {
 	}
 
 	/* ----- Dessin d'une distance entre deux villes ----- */
-	public void paintDistance(Graphics2D g, Ville ville1, Ville ville2) {
+	public void paintDistance(Graphics2D g, Ville ville1, Ville ville2,int i) {
 		if (ville1 != null && ville2 != null) {
 			int x1 = (int) ville1.getPosX();
 			int y1 = (int) ville1.getPosY();
 			int x2 = (int) ville2.getPosX();
 			int y2 = (int) ville2.getPosY();
 
-			g.setColor(Color.RED);
+			g.setColor(Color.BLACK);
 			g.setStroke(new BasicStroke(2));
 			g.drawLine(x1, y1, x2, y2);
+			// Déterminez les coordonnées du point milieu entre les deux villes
+			int midX = (x1 + x2) / 2;
+			int midY = (y1 + y2) / 2;
+
+			// Dessinez le nombre à côté de la ligne
+			// Set the font size and style
+			Font font = new Font("Arial", Font.BOLD, 16); // Adjust size and style as needed
+
+			// Draw the number next to the line
+			g.setFont(font);
+			g.setColor(new Color(58, 109, 214));
+			g.drawString(Integer.toString(i), midX, midY);
 		}
+
 	}
 
 	/* ----- Dessin du plus court chemin ----- */
@@ -157,7 +168,9 @@ public class MapPanel extends JPanel {
 				System.out.println("Etape actuelle : " + etapeActuelle);
 				return;
 			}
-			paintDistance(g2d, mesDistances.get(i), mesDistances.get(i + 1));
+			paintDistance(g2d, mesDistances.get(i), mesDistances.get(i + 1),i);
+			// Pause the loop execution for 2 seconds after each iteration
+
 		}
 	}
 }

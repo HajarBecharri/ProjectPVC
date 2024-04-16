@@ -62,7 +62,7 @@ public class InterfaceVoyageur extends JFrame {
 		contentPane = new JPanel();
 //		contentPane.setBackground(new Color(165, 214, 247));
 
-		contentPane.setBackground(new Color(245, 222, 179));
+		contentPane.setBackground(Color.BLACK);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -83,8 +83,8 @@ public class InterfaceVoyageur extends JFrame {
 		JButton getCheminBtn = new JButton("Calculer");
 
 		getCheminBtn.setFont(new Font("Tahoma", Font.BOLD, 13));
-		getCheminBtn.setForeground(new Color(255, 255, 255));
-		getCheminBtn.setBackground(new Color(205, 133, 63));
+		getCheminBtn.setForeground(new Color(255, 255, 255)); // Blanc
+		getCheminBtn.setBackground(new Color(205, 92, 92));  // Rose foncé
 		
 		getCheminBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -110,9 +110,10 @@ public class InterfaceVoyageur extends JFrame {
 		undoBtn.setFont(new Font("Tahoma", Font.BOLD, 13));
 		undoBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println(getPvc().getEtapeCourante() + " etape");
 				getPvc().EtapePrecedente();
 				int i = getPvc().getEtapeCourante();
-				System.out.println(i + "etape");
+				System.out.println(i + " etape");
 				map.setEtapeActuelle(i);
 				map.repaint();
 			}
@@ -132,7 +133,7 @@ public class InterfaceVoyageur extends JFrame {
 				System.out.println(villes.length);
 				System.out.println(getPvc().getEtapeCourante());
 
-				if (getPvc().getEtapeCourante() < villes.length - 1) {
+				if (getPvc().getEtapeCourante() <= villes.length - 1) {
 					map.setEtapeActuelle(map.getEtapeActuelle() + 1);
 				}
 				System.out.println(map.getEtapeActuelle() + "etape");
