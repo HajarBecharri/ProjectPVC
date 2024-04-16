@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class state {
+public class statePVC {
 	
 	public static int maxGenerations = 15000;
 	

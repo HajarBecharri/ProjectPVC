@@ -1,4 +1,4 @@
-package voyageur;
+package org.example.voyageur;
 
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -10,18 +10,18 @@ public class ConteneurVoyageur {
 
 	public static  void main(String[] args){
         try{
-            // On récupère l'instance singleton du JADE Runtime
+            // On rï¿½cupï¿½re l'instance singleton du JADE Runtime
             Runtime runtime=Runtime.instance();
-            //Crée une implémentation de profil
+            //Crï¿½e une implï¿½mentation de profil
             ProfileImpl profileImpl=new ProfileImpl(false);
-            //On spécifie l'hôte réseau sur lequel s'exécute le conteneur principal JADE
+            //On spï¿½cifie l'hï¿½te rï¿½seau sur lequel s'exï¿½cute le conteneur principal JADE
             profileImpl.setParameter(ProfileImpl.MAIN_HOST, "localhost");
-            //On Crée un conteneur périphérique JADE
+            //On Crï¿½e un conteneur pï¿½riphï¿½rique JADE
             AgentContainer agentContainer = runtime.createAgentContainer(profileImpl);
-            //On créé l'instance de l'agent
+            //On crï¿½ï¿½ l'instance de l'agent
             AgentController agentController = agentContainer.createNewAgent("Voyageur", AgentVoyageur.class.getName(), new Object[]{});
 
-            //Démarré l'instance de l'agent
+            //Dï¿½marrï¿½ l'instance de l'agent
             agentController.start();
 
         } catch (ControllerException e){

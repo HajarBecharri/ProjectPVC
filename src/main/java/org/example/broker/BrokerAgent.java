@@ -1,4 +1,4 @@
-package org.example.intermediaire;
+package org.example.broker;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -7,13 +7,13 @@ import jade.core.behaviours.ParallelBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
-import org.example.Outils.Ville;
+import org.example.problematic.Ville;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
-public class AgentIntermediaire extends Agent {
+public class BrokerAgent extends Agent {
 
     //------------- Pour initialiser un agent --------------
     @Override
@@ -33,48 +33,45 @@ public class AgentIntermediaire extends Agent {
             public void action() {
 
                 //Pr�paration du template pour recevoir des messages
-                MessageTemplate mt1 = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.REQUEST), MessageTemplate.MatchOntology("ca marche"));
+                MessageTemplate mt1 = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.REQUEST), MessageTemplate.MatchOntology("Tableau des Non villes ordonnes"));
                
-                //Recevoir les messages des autres agents
-                ACLMessage reponse1 = receive(mt1);
-                
-                MessageTemplate mt2 = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.INFORM), MessageTemplate.MatchOntology("Calcul du chemin optimal"));
-                ACLMessage reponse2 = receive(mt2);
+                //Recevoir les villes Non ordonnees de agent voyageur
+                ACLMessage villesNonOrdonneesRciever = receive(mt1);
+                //Recevoir les villes ordonnees de agent calculateur apres que Broker envoie tableau des villes non ordonnes pour le trier
+                MessageTemplate mt2 = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.INFORM), MessageTemplate.MatchOntology("Tableau des villes ordonnes"));
+                ACLMessage villesOrdonneesReciever = receive(mt2);
 
-                if(reponse1 != null){
+                if(villesNonOrdonneesRciever != null){
                     try{
-                        //On r�cup�re le contenu de reponse1 (ACLMessage)
-                        List<Ville> villes = (List<Ville>)reponse1.getContentObject();
+                        //envoyer les villes Non ordonnees a l agent calculateur pour le trier
+                        List<Ville> villes = (List<Ville>)villesNonOrdonneesRciever.getContentObject();
 
-                        ACLMessage reponse3 = new ACLMessage(ACLMessage.REQUEST);
-
-                        //Modification des param�tres de la requete ACLMessage
-                        reponse3.addReceiver(new AID("calculateur", AID.ISLOCALNAME));
+                        ACLMessage villesNonordonnesSend = new ACLMessage(ACLMessage.REQUEST);
+                        villesNonordonnesSend.addReceiver(new AID("calculateur", AID.ISLOCALNAME));
                         //On met la liste des ville dans le message
-                        reponse3.setContentObject((Serializable) villes);
-                        reponse3.setOntology("Calcul");
+                        villesNonordonnesSend.setContentObject((Serializable) villes);
+                        villesNonordonnesSend.setOntology("Tableau des villes non ordonnees");
                         //Envoi de message
-                        send(reponse3);
+                        send(villesNonordonnesSend);
                     } catch (UnreadableException e) {
                         e.printStackTrace();
                     }catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-                else if(reponse2 != null){
+                else if(villesOrdonneesReciever != null){
                     try {
+                        //envoyer les villes Non ordonnees a l agent voyegeur apres d etre ordonner puis envoyer par calculateur
+                        Ville[] villesOrdonnees = (Ville[]) villesOrdonneesReciever.getContentObject();
 
-                        Ville[] villesOrdonnees = (Ville[]) reponse2.getContentObject();
+                        ACLMessage villesordonneesSender = new ACLMessage(ACLMessage.INFORM);
 
-                        ACLMessage reponse3 = new ACLMessage(ACLMessage.INFORM);
-
-                        //Modification des param�tres de la requete ACLMessage
-                        reponse3.addReceiver(new AID("Voyageur", AID.ISLOCALNAME));
+                        villesordonneesSender.addReceiver(new AID("Voyageur", AID.ISLOCALNAME));
                         //On met le tableau des villes ordonn�es dans le message
-                        reponse3.setContentObject((Serializable) villesOrdonnees);
-                        reponse3.setOntology("Tableau des villes ordonnees");
+                        villesordonneesSender.setContentObject((Serializable) villesOrdonnees);
+                        villesordonneesSender.setOntology("Tableau des villes ordonnees");
                         //Envoi de message
-                        send(reponse3);
+                        send(villesordonneesSender);
 
                     } catch (UnreadableException e) {
                         e.printStackTrace();

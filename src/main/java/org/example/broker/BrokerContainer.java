@@ -1,4 +1,4 @@
-package org.example.intermediaire;
+package org.example.broker;
 
 import jade.core.ProfileImpl;
 import jade.wrapper.AgentContainer;
@@ -6,7 +6,7 @@ import jade.wrapper.AgentController;
 import jade.wrapper.ControllerException;
 import jade.core.Runtime;
 
-public class ConteneurIntermediaire {
+public class BrokerContainer {
 	
 	public static  void main(String[] args){
         try{
@@ -19,7 +19,7 @@ public class ConteneurIntermediaire {
             //On Cr�e un conteneur p�riph�rique JADE
             AgentContainer agentContainer = runtime.createAgentContainer(profileImpl);
             //On cr�� l'instance de l'agent
-            AgentController agentController = agentContainer.createNewAgent("Intermediaire", AgentIntermediaire.class.getName(), new Object[]{});
+            AgentController agentController = agentContainer.createNewAgent("broker", BrokerAgent.class.getName(), new Object[]{});
             //D�marr� l'instance de l'agent
             agentController.start();
 

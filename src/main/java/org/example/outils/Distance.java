@@ -1,4 +1,6 @@
-package Outils;
+package org.example.outils;
+
+import org.example.problematic.Ville;
 
 public class Distance {
 	

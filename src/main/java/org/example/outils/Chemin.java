@@ -1,8 +1,8 @@
-package Outils;
+package org.example.outils;
 /*
-	Cette classe sert à trouver des chemins qui represente une solution donnée est proche de la 
-	solution optimale du problème souhaité. 
-	Il détermine l'adéquation d'une solution.
+	Cette classe sert ï¿½ trouver des chemins qui represente une solution donnï¿½e est proche de la 
+	solution optimale du problï¿½me souhaitï¿½. 
+	Il dï¿½termine l'adï¿½quation d'une solution.
 */
 
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class Chemin {
 
 	
-	private int [] villeParcourus; // ensemble des villes déjà visité
+	private int [] villeParcourus; // ensemble des villes dï¿½jï¿½ visitï¿½
 	private double score = -1;  // score convenable au chemin  
 	
 	public Chemin(int[] villeParcourus)
@@ -24,7 +24,7 @@ public class Chemin {
 		int[] villerempli;
 		villerempli = new int[nbreVilleParcourus];
 //			villeParcourus =new int[nbreVilleParcourus];
-		//créer un chemin aléatoire  
+		//crï¿½er un chemin alï¿½atoire  
 		for(int ville = 0; ville < nbreVilleParcourus; ville++)
 		{
 		

@@ -1,4 +1,8 @@
-package org.example.Outils;
+package org.example.problematic;
+
+import org.example.outils.Chemin;
+import org.example.outils.Distance;
+import org.example.outils.individus;
 
 import java.util.Arrays;
 
@@ -21,9 +25,9 @@ public class AlgoGenetic {
 		this.tailleTournoi = tailleTournoi;
 	}
 	
-	public Solutions initSolutions(int nbreVille)
+	public individus initSolutions(int nbreVille)
 	{
-		Solutions sol = new Solutions(this.nbreSolution, nbreVille);
+		individus sol = new individus(this.nbreSolution, nbreVille);
 		return sol;
 				
 	}
@@ -52,7 +56,7 @@ public class AlgoGenetic {
 	 * definir le score pour chaque individu 
 	 */
 	
-	public void definitScoreChemin(Solutions solutions, Ville villes[])
+	public void definitScoreChemin(individus solutions, Ville villes[])
 	{
 		double scoreSolution = 0;
 		
@@ -63,15 +67,15 @@ public class AlgoGenetic {
 		}
 		
 		double moyenneScore = scoreSolution / solutions.taille();
-		solutions.setScore(moyenneScore);
+		solutions.setFitness(moyenneScore);
 	}
 	
 	/*
 	 * selectionner le meilleur chemin en utilisant le tournoi
 	 */
-	public Chemin select(Solutions solutions)
+	public Chemin select(individus solutions)
 	{
-		Solutions tournoi =  new Solutions(this.tailleTournoi);
+		individus tournoi =  new individus(this.tailleTournoi);
 		
 		//melanger le contenu des solutions cr�er al�atoirement pour commen�er le tournoi 
 		solutions.Melanger();
@@ -85,9 +89,9 @@ public class AlgoGenetic {
 		return tournoi.CheminApte(0);
 	}
 	
-	public Solutions crossoverSolution(Solutions solutions)
+	public individus crossoverSolution(individus solutions)
 	{
-		Solutions nouvSolutions = new Solutions(solutions.taille());
+		individus nouvSolutions = new individus(solutions.taille());
 		
 		
 		for(int solIndex = 0; solIndex < nouvSolutions.taille() ; solIndex++)
@@ -147,9 +151,9 @@ public class AlgoGenetic {
 
 	
 
-	public Solutions muterSolution(Solutions solutions)
+	public individus muterSolution(individus solutions)
 	{
-		Solutions nouvSolutions = new Solutions(this.nbreSolution);
+		individus nouvSolutions = new individus(this.nbreSolution);
 		
 		for(int solIndex = 0; solIndex < solutions.taille(); solIndex++)
 		{

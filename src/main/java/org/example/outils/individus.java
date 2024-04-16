@@ -1,25 +1,25 @@
-package org.example.Outils;
+package org.example.outils;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
 
-public class Solutions {
+public class individus {
 	
 	/* Cette classe est cree pour l'ensemble des solutions ou l'ensemble des chemins trouves   */
 	
 	private Chemin chemins[];     //---- liste des chemins possibles
-	private double score = -1;    //---- represente le fitness de chaque chemin
+	private double fitness = -1;    //---- represente le fitness de chaque chemin
 
 	
 
 	//------ Constructer -> Initialisation de l'ensembles des solutions (Chemins)
-	public Solutions(int taille) {
+	public individus(int taille) {
 		this.chemins = new Chemin[taille];
 	}
 	
 	
-	public Solutions(int taille, int tailleVilleParcourus) {
+	public individus(int taille, int tailleVilleParcourus) {
 		//------ Initialistation de l'ensembles des solutions
 		this.chemins = new Chemin[taille];
 		
@@ -48,13 +48,13 @@ public class Solutions {
 	}
 
 
-	public double getScore() {
-		return score;
+	public double getFitness() {
+		return fitness;
 	}
 
 
-	public void setScore(double score) {
-		this.score = score;
+	public void setFitness(double fitness) {
+		this.fitness = fitness;
 	}
 	
 	//----- la taille de l'ensemble des solutions

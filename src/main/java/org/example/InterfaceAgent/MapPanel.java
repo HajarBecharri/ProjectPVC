@@ -1,4 +1,4 @@
-package org.example.voyageur;
+package org.example.InterfaceAgent;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

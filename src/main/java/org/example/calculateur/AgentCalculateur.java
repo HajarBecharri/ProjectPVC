@@ -1,4 +1,4 @@
-package calculateur;
+package org.example.calculateur;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -7,14 +7,11 @@ import jade.core.behaviours.ParallelBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
-import voyageur.AgentVoyageur;
-
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
+import org.example.problematic.Ville;
+import org.example.problematic.statePVC;
 
-import Outils.PVC;
-import Outils.Ville;
 
 public class AgentCalculateur extends Agent {
 
@@ -22,47 +19,47 @@ public class AgentCalculateur extends Agent {
 	@Override
 	protected void setup() {
 
-		System.out.println("L'agent calculateur est démarré");
+		System.out.println("L'agent calculateur est dï¿½marrï¿½");
 
-		// création d'une instance de ParallelBehaviour pour exécuter plusieurs
-		// Behaviours en parallèle
+		// crï¿½ation d'une instance de ParallelBehaviour pour exï¿½cuter plusieurs
+		// Behaviours en parallï¿½le
 		ParallelBehaviour comportementparallele = new ParallelBehaviour();
 		// L'ajout de sous-Behaviour
 		addBehaviour(comportementparallele);
 
-		// l'ajout d'un CyclicBehaviour pour afficher un message à chaque fois qu'il
+		// l'ajout d'un CyclicBehaviour pour afficher un message ï¿½ chaque fois qu'il
 		// s'execute
 		comportementparallele.addSubBehaviour(new CyclicBehaviour() {
 
 			@Override
 			public void action() {
 
-				// Préparation du template pour recevoir des messages
+				// Prï¿½paration du template pour recevoir des messages
 				MessageTemplate mt1 = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
-						MessageTemplate.MatchOntology("Calcul"));
+						MessageTemplate.MatchOntology("Tableau des villes non ordonnees"));
 				// Recevoir les messages des autres agents
-				ACLMessage reponse1 = receive(mt1);
+				ACLMessage villesNonOrdonneesReciever = receive(mt1);
 
-				if (reponse1 != null) {
+				if (villesNonOrdonneesReciever != null) {
 
 					try {
-						// On récupère le contenu de reponse1 (ACLMessage)
-						List<Ville> villes = (List<Ville>) reponse1.getContentObject();
+						// On rï¿½cupï¿½re le contenu de reponse1 (ACLMessage)
+						List<Ville> villes = (List<Ville>) villesNonOrdonneesReciever.getContentObject();
 
-						// On créé une instance de la classe PVC
-						PVC pvc = new PVC();
+						// On crï¿½ï¿½ une instance de la classe PVC
+						statePVC pvc = new statePVC();
 
-						// On récupère les villes dont la distance entre eux est minimale
+						// On rï¿½cupï¿½re les villes dont la distance entre eux est minimale
 						Ville[] villesOrdonnees = pvc.getPlusCourteDist(villes);
 
-						ACLMessage reponse2 = new ACLMessage(ACLMessage.INFORM);
-						// Modification des paramètres de la requete ACLMessage
-						reponse2.addReceiver(new AID("Intermediaire", AID.ISLOCALNAME));
+						ACLMessage villesOrdonneesSender = new ACLMessage(ACLMessage.INFORM);
+						// Modification des paramï¿½tres de la requete ACLMessage
+						villesOrdonneesSender.addReceiver(new AID("broker", AID.ISLOCALNAME));
 						// On met le tableau des villes ordonnees dans le message
-						reponse2.setContentObject(villesOrdonnees);
-						reponse2.setOntology("Calcul du chemin optimal");
+						villesOrdonneesSender.setContentObject(villesOrdonnees);
+						villesOrdonneesSender.setOntology("Tableau des villes ordonnes");
 						// Envoi de message
-						send(reponse2);
+						send(villesOrdonneesSender);
 
 					} catch (UnreadableException e) {
 //                        e.printStackTrace();

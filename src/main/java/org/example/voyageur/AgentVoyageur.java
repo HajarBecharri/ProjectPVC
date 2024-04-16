@@ -1,4 +1,4 @@
-package voyageur;
+package org.example.voyageur;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -7,7 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import Outils.Ville;
+import org.example.InterfaceAgent.InterfaceVoyageur;
+import org.example.problematic.Ville;
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.ParallelBehaviour;
@@ -19,12 +20,12 @@ import jade.lang.acl.UnreadableException;
 
 public class AgentVoyageur extends GuiAgent {
 	private static final long serialVersionUID = 1L;
-	private voyageur.InterfaceVoyageur interfaceAgent;
+	private InterfaceVoyageur interfaceAgent;
 
 	protected void setup() {
 		System.out.println("Bienvenue ! C'est le voyageur Agent");
 
-		interfaceAgent = new voyageur.InterfaceVoyageur();
+		interfaceAgent = new InterfaceVoyageur();
 		interfaceAgent.setVisible(true);
 		interfaceAgent.setAgentVoyageur(this);
 
@@ -44,7 +45,7 @@ public class AgentVoyageur extends GuiAgent {
 
 				MessageTemplate message2 = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.INFORM),
 						MessageTemplate.MatchOntology("Tableau des villes ordonnees"));
-				ACLMessage acl2 = receive(message2);
+				ACLMessage villesOrdonneesReciever = receive(message2);
 
 				if (acl1 != null) {
 					System.out.println("L'emetteur de message : " + acl1.getSender());
@@ -54,10 +55,10 @@ public class AgentVoyageur extends GuiAgent {
 					System.out.println("Langage : " + acl1.getLanguage());
 					System.out.println("L'ontology : " + acl1.getOntology());
 
-				} else if (acl2 != null) {
+				} else if (villesOrdonneesReciever != null) {
 
 					try {
-						Ville[] villeOrdonnee = (Ville[]) acl2.getContentObject();
+						Ville[] villeOrdonnee = (Ville[]) villesOrdonneesReciever.getContentObject();
 						interfaceAgent.setVilles(villeOrdonnee);
 						interfaceAgent.getMap().setDistances(new ArrayList<Ville>(Arrays.asList(villeOrdonnee)));
 						interfaceAgent.getMap().setPlusCourt(true);
@@ -78,7 +79,7 @@ public class AgentVoyageur extends GuiAgent {
 	}
 
 	@Override
-	protected void onGuiEvent(GuiEvent event) {
+	public void onGuiEvent(GuiEvent event) {
 		switch (event.getType()) {
 		case 1:
 			System.out.println("En Gui Event");
@@ -87,7 +88,7 @@ public class AgentVoyageur extends GuiAgent {
 			List<Ville> villes = (List<Ville>) params.get("v1");
 
 			ACLMessage aclMessage = new ACLMessage(ACLMessage.REQUEST);
-			aclMessage.addReceiver(new AID("Intermediaire", AID.ISLOCALNAME));
+			aclMessage.addReceiver(new AID("broker", AID.ISLOCALNAME));
 
 			try {
 				aclMessage.setContentObject((Serializable) villes);
@@ -95,7 +96,7 @@ public class AgentVoyageur extends GuiAgent {
 			} catch (IOException ex) {
 				System.out.println(ex);
 			}
-			aclMessage.setOntology("ca marche");
+			aclMessage.setOntology("Tableau des Non villes ordonnes");
 			send(aclMessage);
 			break;
 

@@ -1,4 +1,4 @@
-package org.example.voyageur;
+package org.example.InterfaceAgent;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -13,8 +13,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import org.example.problematic.Ville;
-import org.example.problematic.PVC;
+import org.example.problematic.statePVC;
 import jade.gui.GuiEvent;
+import org.example.voyageur.AgentVoyageur;
+
 import java.awt.Font;
 import javax.swing.JLabel;
 
@@ -27,7 +29,7 @@ public class InterfaceVoyageur extends JFrame {
 
 	private AgentVoyageur agentVoyageur;
 	private Ville villes[];
-	private PVC pvc = new PVC();
+	private statePVC pvc = new statePVC();
 	private JLabel lblNewLabel;
 
 	/**
@@ -155,11 +157,11 @@ public class InterfaceVoyageur extends JFrame {
 		this.villes = villes;
 	}
 
-	public PVC getPvc() {
+	public statePVC getPvc() {
 		return pvc;
 	}
 
-	public void setPvc(PVC pvc) {
+	public void setPvc(statePVC pvc) {
 		this.pvc = pvc;
 	}
 

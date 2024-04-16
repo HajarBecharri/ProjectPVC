@@ -1,4 +1,4 @@
-package main;
+package org.example.main;
 
 import jade.core.Profile;
 import jade.core.ProfileImpl;
