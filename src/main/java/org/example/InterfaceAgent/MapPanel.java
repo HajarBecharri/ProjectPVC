@@ -48,7 +48,7 @@ public class MapPanel extends JPanel {
 				int y = e.getY();
 
 				try {
-					imageVille = new ImageIcon(MapPanel.class.getResource("/images/loc5.png")).getImage();
+					imageVille = new ImageIcon(MapPanel.class.getResource("/images/city5.png")).getImage();
 				} catch (final Exception ex) {
 					imageVille = null;
 				}
@@ -113,10 +113,11 @@ public class MapPanel extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 		super.paintComponent(g2d);
 
-		this.imageBackground = new ImageIcon(MapPanel.class.getResource("/images/map.png")).getImage();
+		this.imageBackground = new ImageIcon(MapPanel.class.getResource("/images/maroc5.jpg")).getImage();
 
 		if (imageBackground != null) {
-			g.drawImage(imageBackground, 0, 0, this);
+			// Ajuster la taille de l'image de fond pour correspondre à la taille du JPanel
+			g2d.drawImage(imageBackground, 0, 0, getWidth(), getHeight(), this);
 		}
 	}
 
@@ -154,7 +155,7 @@ public class MapPanel extends JPanel {
 
 			// Draw the number next to the line
 			g.setFont(font);
-			g.setColor(new Color(58, 109, 214));
+			g.setColor(new Color(1, 6, 16));
 			g.drawString(Integer.toString(i), midX, midY);
 		}
 

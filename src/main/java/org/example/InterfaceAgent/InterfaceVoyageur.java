@@ -1,7 +1,6 @@
 package org.example.InterfaceAgent;
 
-import java.awt.Color;
-import java.awt.EventQueue;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -12,12 +11,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import org.example.problematic.Ville;
-import org.example.problematic.statePVC;
+
 import jade.gui.GuiEvent;
+import org.example.InterfaceAgent.MapPanel;
 import org.example.voyageur.AgentVoyageur;
 
-import java.awt.Font;
+import org.example.problematic.statePVC ;
+import org.example.problematic.Ville ;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class InterfaceVoyageur extends JFrame {
@@ -54,38 +55,36 @@ public class InterfaceVoyageur extends JFrame {
 
 	/* ----- Constructeur ----- */
 	public InterfaceVoyageur() {
-
-		setTitle("Probl\u00E8me de Voyageur de Commerce");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(InterfaceVoyageur.class.getResource("/images/city5.png")));
+		setTitle("Logistic Application ");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 634, 515);
 		setResizable(false);
 		contentPane = new JPanel();
 //		contentPane.setBackground(new Color(165, 214, 247));
-
-		contentPane.setBackground(Color.BLACK);
+		contentPane.setBackground(new Color(250, 249, 248));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		mapPanel = new JPanel();
-		mapPanel.setBackground(new Color(255, 245, 238));
-		mapPanel.setBounds(10, 10, 451, 454);
+		mapPanel.setBackground(new Color(250, 249, 248));
+		mapPanel.setBounds(20, 45, 580, 400);
 		contentPane.add(mapPanel);
 		mapPanel.setLayout(null);
-		
-				map = new MapPanel();
-				map.setBounds(0, 0, 451, 454);
-				mapPanel.add(map);
-				map.setBorder(BorderFactory.createLineBorder(new Color(63, 54, 151), 2));
-				map.repaint();
+
+		map = new MapPanel();
+		map.setBounds(0, 25, 575, 360);
+		mapPanel.add(map);
+		map.setBorder(BorderFactory.createLineBorder(new Color(63, 54, 151), 2));
+		map.repaint();
 
 		/* ----- Bouton pour calculer la solution ----- */
-		JButton getCheminBtn = new JButton("Calculer");
-
+		JButton getCheminBtn = new JButton("Valider");
 		getCheminBtn.setFont(new Font("Tahoma", Font.BOLD, 13));
-		getCheminBtn.setForeground(new Color(255, 255, 255)); // Blanc
-		getCheminBtn.setBackground(new Color(205, 92, 92));  // Rose foncé
-		
+		getCheminBtn.setForeground(new Color(255, 255, 255));
+		getCheminBtn.setBackground(new Color(11, 93, 216));
+
 		getCheminBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("On va commencer le calcul :)");
@@ -98,42 +97,38 @@ public class InterfaceVoyageur extends JFrame {
 				agentVoyageur.onGuiEvent(gev);
 			}
 		});
-		getCheminBtn.setBounds(471, 10, 137, 39);
+		getCheminBtn.setBounds(493, 440, 100, 30);
 		contentPane.add(getCheminBtn);
 
 		/* ----- Bouton revenir en arri�re ----- */
 		JButton undoBtn = new JButton("Precedent");
-
+		undoBtn.setIcon(new ImageIcon(InterfaceVoyageur.class.getResource("/images/redoo.png")));
 		undoBtn.setForeground(new Color(245, 255, 250));
 		undoBtn.setBackground(new Color(58, 109, 214));
 		undoBtn.setBorder(BorderFactory.createLineBorder(new Color(63, 54, 151), 1));
 		undoBtn.setFont(new Font("Tahoma", Font.BOLD, 13));
 		undoBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(getPvc().getEtapeCourante() + " etape");
 				getPvc().EtapePrecedente();
 				int i = getPvc().getEtapeCourante();
-				System.out.println(i + " etape");
+				System.out.println(i + "etape");
 				map.setEtapeActuelle(i);
 				map.repaint();
 			}
 		});
 		undoBtn.setBounds(471, 71, 137, 39);
-		contentPane.add(undoBtn);
+//		contentPane.add(undoBtn);
 
 		/* ----- Bouton revenir en avant ----- */
 		JButton redoBtn = new JButton("Suivant");
-
+		redoBtn.setIcon(new ImageIcon(InterfaceVoyageur.class.getResource("/images/undoo.png")));
 		redoBtn.setForeground(new Color(245, 245, 220));
 		redoBtn.setFont(new Font("Tahoma", Font.BOLD, 13));
 		redoBtn.setBorder(BorderFactory.createLineBorder(new Color(63, 54, 151), 1));
 		redoBtn.setBackground(new Color(58, 109, 214));
 		redoBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(villes.length);
-				System.out.println(getPvc().getEtapeCourante());
-
-				if (getPvc().getEtapeCourante() <= villes.length - 1) {
+				if (getPvc().getEtapeCourante() < villes.length - 1) {
 					map.setEtapeActuelle(map.getEtapeActuelle() + 1);
 				}
 				System.out.println(map.getEtapeActuelle() + "etape");
@@ -141,12 +136,12 @@ public class InterfaceVoyageur extends JFrame {
 			}
 		});
 		redoBtn.setBounds(471, 128, 137, 39);
-		contentPane.add(redoBtn);
-		
-		lblNewLabel = new JLabel("");
+//		contentPane.add(redoBtn);
 
-		lblNewLabel.setBounds(493, 341, 137, 146);
-		contentPane.add(lblNewLabel);
+		lblNewLabel = new JLabel("Veuillez choisir les villes que vous voulez visiter ");
+		lblNewLabel.setBorder(new EmptyBorder(25, 5, 0, 0));
+		contentPane.setLayout(new BorderLayout());
+		contentPane.add(lblNewLabel, BorderLayout.NORTH);
 	}
 
 	/* ----- Getters & Setters ----- */
@@ -181,6 +176,4 @@ public class InterfaceVoyageur extends JFrame {
 	public void setMap(MapPanel map) {
 		this.map = map;
 	}
-	
-	
 }
