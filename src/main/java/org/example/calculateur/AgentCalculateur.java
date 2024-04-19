@@ -33,34 +33,27 @@ public class AgentCalculateur extends Agent {
 
 			@Override
 			public void action() {
-
 				// Pr�paration du template pour recevoir des messages
 				MessageTemplate mt1 = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
-						MessageTemplate.MatchOntology("Tableau des villes non ordonnees"));
+						MessageTemplate.MatchOntology("Tableau des Non villes ordonnes"));
 				// Recevoir les messages des autres agents
 				ACLMessage villesNonOrdonneesReciever = receive(mt1);
-
 				if (villesNonOrdonneesReciever != null) {
-
 					try {
 						// On r�cup�re le contenu de reponse1 (ACLMessage)
 						List<Ville> villes = (List<Ville>) villesNonOrdonneesReciever.getContentObject();
-
 						// On cr�� une instance de la classe PVC
 						statePVC pvc = new statePVC();
-
 						// On r�cup�re les villes dont la distance entre eux est minimale
 						Ville[] villesOrdonnees = pvc.getPlusCourteDist(villes);
-
 						ACLMessage villesOrdonneesSender = new ACLMessage(ACLMessage.INFORM);
 						// Modification des param�tres de la requete ACLMessage
-						villesOrdonneesSender.addReceiver(new AID("broker", AID.ISLOCALNAME));
+						villesOrdonneesSender.addReceiver(new AID("Voyageur", AID.ISLOCALNAME));
 						// On met le tableau des villes ordonnees dans le message
 						villesOrdonneesSender.setContentObject(villesOrdonnees);
-						villesOrdonneesSender.setOntology("Tableau des villes ordonnes");
+						villesOrdonneesSender.setOntology("Tableau des villes ordonnees");
 						// Envoi de message
 						send(villesOrdonneesSender);
-
 					} catch (UnreadableException e) {
 //                        e.printStackTrace();
 						System.out.println(e);

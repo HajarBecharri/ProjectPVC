@@ -24,45 +24,28 @@ public class AgentVoyageur extends GuiAgent {
 
 	protected void setup() {
 		System.out.println("Bienvenue ! C'est le voyageur Agent");
-
 		interfaceAgent = new InterfaceVoyageur();
 		interfaceAgent.setVisible(true);
 		interfaceAgent.setAgentVoyageur(this);
-
 		System.out.println("Le Voyageur est pret !");
-
 		ParallelBehaviour parallelBehaviour = new ParallelBehaviour();
 		addBehaviour(parallelBehaviour);
-
 		parallelBehaviour.addSubBehaviour(new CyclicBehaviour() {
 
 			@Override
 			public void action() {
-
 				MessageTemplate message1 = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
 						MessageTemplate.MatchOntology("ca marche"));
 				ACLMessage acl1 = receive(message1);
-
 				MessageTemplate message2 = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.INFORM),
 						MessageTemplate.MatchOntology("Tableau des villes ordonnees"));
 				ACLMessage villesOrdonneesReciever = receive(message2);
-
-				if (acl1 != null) {
-					System.out.println("L'emetteur de message : " + acl1.getSender());
-					System.out.println("Le destinataire de message : " + acl1.getInReplyTo());
-					System.out.println("L'acte de communication : " + acl1.getPerformative());
-					System.out.println("LE contenu de message : " + acl1.getContent());
-					System.out.println("Langage : " + acl1.getLanguage());
-					System.out.println("L'ontology : " + acl1.getOntology());
-
-				} else if (villesOrdonneesReciever != null) {
-
+				  if (villesOrdonneesReciever != null) {
 					try {
 						Ville[] villeOrdonnee = (Ville[]) villesOrdonneesReciever.getContentObject();
 						interfaceAgent.setVilles(villeOrdonnee);
 						interfaceAgent.getMap().setDistances(new ArrayList<Ville>(Arrays.asList(villeOrdonnee)));
 						interfaceAgent.getMap().setPlusCourt(true);
-
 						interfaceAgent.getPvc().setEtapeCourante(villeOrdonnee.length);
 						interfaceAgent.getMap().setEtapeActuelle(interfaceAgent.getPvc().getEtapeCourante());
 						interfaceAgent.getMap().repaint();
@@ -70,6 +53,14 @@ public class AgentVoyageur extends GuiAgent {
 					} catch (UnreadableException ex) {
 						System.out.println(ex);
 					}
+
+				}else if (acl1 != null) {
+					System.out.println("L'emetteur de message : " + acl1.getSender());
+					System.out.println("Le destinataire de message : " + acl1.getInReplyTo());
+					System.out.println("L'acte de communication : " + acl1.getPerformative());
+					System.out.println("LE contenu de message : " + acl1.getContent());
+					System.out.println("Langage : " + acl1.getLanguage());
+					System.out.println("L'ontology : " + acl1.getOntology());
 
 				} else
 					block();
@@ -88,7 +79,7 @@ public class AgentVoyageur extends GuiAgent {
 			List<Ville> villes = (List<Ville>) params.get("v1");
 
 			ACLMessage aclMessage = new ACLMessage(ACLMessage.REQUEST);
-			aclMessage.addReceiver(new AID("broker", AID.ISLOCALNAME));
+			aclMessage.addReceiver(new AID("calculateur", AID.ISLOCALNAME));
 
 			try {
 				aclMessage.setContentObject((Serializable) villes);
